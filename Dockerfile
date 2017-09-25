@@ -1,1 +1,9 @@
-# Create a Dockerfile that will run our node app
+FROM node:8.4
+
+COPY . /app
+
+WORKDIR /app
+
+RUN npm install
+
+CMD ["npm", "start"]
