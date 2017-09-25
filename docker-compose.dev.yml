@@ -1,1 +1,15 @@
-# Modify the docker-compose.dev.yml for development
+version: '3.3'
+
+services:
+  web:
+    image: workshop/nodeapp
+    container_name: web
+    build:
+      context: .
+    ports:
+      - 3000:3000
+    environment:
+      NODE_ENV: production
+    volumes:
+      - .:/app
+    entrypoint: npm run dev
