@@ -1,1 +1,13 @@
-# Create a production docker-compose.yml file
+version: '3.3'
+
+services:
+  web:
+    image: workshop/nodeapp
+    container_name: web
+    build:
+      context: .
+    ports:
+      - 80:3000
+    environment:
+      NODE_ENV: production
+    entrypoint: npm start
