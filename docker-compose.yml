@@ -11,3 +11,11 @@ services:
     environment:
       NODE_ENV: production
     entrypoint: npm start
+  postgres:
+    image: postgres:9.6.3
+    container_name: db
+    environment:
+      POSTGRES_DB: kcdc
+      POSTGRES_USER: kcdc_app
+    volumes:
+      - ./db/prod:/var/lib/postgresql/data

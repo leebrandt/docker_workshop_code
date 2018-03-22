@@ -9,7 +9,19 @@ services:
     ports:
       - 3000:3000
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
+      DATABASE_URL: postgres://kcdc_app@postgres:5432/kcdc
     volumes:
       - .:/app
     entrypoint: npm run dev
+  postgres:
+    image: postgres:9.6.3
+    container_name: db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: kcdc
+      POSTGRES_USER: kcdc_app
+    volumes:
+      - ./sql:/docker-entrypoint-initdb.d
+      - ./db/dev:/var/lib/postgresql/data
