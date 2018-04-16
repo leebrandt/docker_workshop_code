@@ -1,16 +1,27 @@
 const express = require('express');
 const router = express.Router();
-const {Client} = require('pg');
-const client = new Client({connectionString:process.env.DATABASE_URL});
+const {Pool} = require('pg');
+const pool = new Pool({connectionString:process.env.DATABASE_URL});
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  client.connect();
-  client.query('SELECT * FROM "Speakers"', (err, rsp) =>{
-    if(err) throw new Error(err);
-    res.status(200).send(rsp.rows);
-    client.end();
-  })
+  // get a client from the pool
+  pool.connect().then(client => {
+    // query db
+    client.query('SELECT * FROM "Speakers"')
+      .then(rsp => {
+        // send back response
+        res.status(200).send(rsp.rows);
+      })
+      .catch(err => {
+        // send back error
+        res.status(500).send(err);
+      })
+      .then(() => {
+        // release client back to pool
+        client.release();
+      });
+  });
 });
 
 module.exports = router;
